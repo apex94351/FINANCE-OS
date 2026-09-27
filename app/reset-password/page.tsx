@@ -1,0 +1,11 @@
+"use client";
+
+import Link from "next/link";
+import { type FormEvent, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
+
+export default function ResetPasswordPage() {
+  const [password, setPassword] = useState(""); const [confirmation, setConfirmation] = useState(""); const [saved, setSaved] = useState(false); const [error, setError] = useState<string | null>(null); const [isLoading, setIsLoading] = useState(false);
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) { event.preventDefault(); setError(null); if (password.length < 10) return setError("Le mot de passe doit contenir au moins 10 caractères."); if (password !== confirmation) return setError("Les mots de passe ne correspondent pas."); setIsLoading(true); const { error: updateError } = await createClient().auth.updateUser({ password }); setIsLoading(false); if (updateError) return setError("Ce lien n’est plus valide. Demandez une nouvelle réinitialisation."); setSaved(true); }
+  return <main className="auth-page"><div className="auth-card"><Link className="brand" href="/"><span className="brand-mark">A</span><span>AI Finance <em>OS</em></span></Link><div className="auth-heading"><p className="eyebrow">SÉCURITÉ</p><h1>Nouveau mot de passe.</h1><p>{saved ? "Votre mot de passe a été modifié." : "Choisissez un mot de passe robuste pour protéger votre compte."}</p></div>{saved ? <div className="form-success" role="status"><Link className="button button-dark" href="/login">Se connecter</Link></div> : <form className="auth-form" onSubmit={handleSubmit}><label>Nouveau mot de passe<input type="password" value={password} onChange={(event) => setPassword(event.target.value)} required minLength={10} autoComplete="new-password" /></label><label>Confirmer le mot de passe<input type="password" value={confirmation} onChange={(event) => setConfirmation(event.target.value)} required autoComplete="new-password" /></label>{error && <p className="form-error" role="alert">{error}</p>}<button className="button button-dark" type="submit" disabled={isLoading}>{isLoading ? "Enregistrement…" : "Modifier le mot de passe"}</button></form>}</div></main>;
+}

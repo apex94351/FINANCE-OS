@@ -1,0 +1,2 @@
+import { InvoiceBucketPage } from "@/components/invoice-bucket-page";
+export default function PayablesPage() { return <InvoiceBucketPage type="payable" title="À payer" description="Les factures fournisseurs et les montants restant dus." />; }

@@ -1,0 +1,2 @@
+import { InvoiceBucketPage } from "@/components/invoice-bucket-page";
+export default function ReceivablesPage() { return <InvoiceBucketPage type="receivable" title="À recevoir" description="Les factures clients et les montants restant à encaisser." />; }
